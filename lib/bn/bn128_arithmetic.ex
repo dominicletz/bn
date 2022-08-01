@@ -219,4 +219,12 @@ defmodule BN.BN128Arithmetic do
   def infinity?({x, y} = {%FQP{}, %FQP{}}) do
     FQP.zero?(x) && FQP.zero?(y)
   end
+
+  def negate({%FQ{value: 0}, %FQ{value: 0}}) do
+    {FQ.new(0), FQ.new(0)}
+  end
+
+  def negate({x, y} = {%FQ{}, %FQ{value: value, modulus: modulus}}) do
+    {x, %FQ{y | value: modulus - rem(value, modulus)}}
+  end
 end
